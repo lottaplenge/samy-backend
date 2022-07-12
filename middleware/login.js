@@ -1,3 +1,4 @@
+// verify that the request comes from a logged in user (crudely)
 module.exports = {
     verify: (req, res, next) => {
         const token = req.headers.token;
