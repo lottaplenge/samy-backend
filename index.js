@@ -1,5 +1,6 @@
 const {Ice} = require('ice-db');
 const db = new Ice();
+db.setStorage(process.cwd())
 
 module.exports = {
     db: db

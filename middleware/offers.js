@@ -1,4 +1,3 @@
-const jwt = require("jsonwebtoken");
 const {db} = require("../index");
 const offers = db.createCollection({
     name: 'offers'

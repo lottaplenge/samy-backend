@@ -7,6 +7,9 @@ users.data = [];
 const {v4: uuidv4} = require('uuid');
 
 module.exports = {
+
+    users: users,
+
     create: (req, res, next) => {
         const user = {
             id: uuidv4(),
@@ -23,7 +26,6 @@ module.exports = {
 
         const token = jwt.sign({
                 userId: user.id,
-                password: user.password
             },
             'mysupersecretbackendtoken', {
                 expiresIn: '1d'
