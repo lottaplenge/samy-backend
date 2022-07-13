@@ -13,6 +13,7 @@ router.delete('/users/:id', login.verify, hasId.verify, users.delete);
 router.put('/users/:id', login.verify, hasId.verify, users.update);
 router.get('/users/', login.verify, users.list);
 
+router.post('/offers', login.verify, offers.create);
 router.get('/offers/:id', login.verify, hasId.verify, offers.findSingle);
 router.delete('/offers/:id', login.verify, hasId.verify, offers.delete);
 router.put('/offers/:id', login.verify, hasId.verify, offers.update);
