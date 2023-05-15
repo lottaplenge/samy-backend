@@ -1,6 +1,5 @@
 // verify that the request comes from a logged in user.js (crudely)
 const jwt = require("jsonwebtoken");
-const {users} = require("./users");
 const User = require('../models/user')
 module.exports = {
     verify: (req, res, next) => {
@@ -10,7 +9,7 @@ module.exports = {
             try {
                 const payload = jwt.verify(token, 'mysupersecretbackendtoken');
                 User.findById(payload.userId)
-                    .then((result) => {
+                    .then(() => {
                         console.log("User verified!");
                         next();
                     })

@@ -1,5 +1,4 @@
 const express = require('express');
-const User = require('../models/user');
 const signUp = require('../middleware/sign-up.js');
 const users = require('../middleware/users.js');
 const login = require("../middleware/login");

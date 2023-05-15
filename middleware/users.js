@@ -62,7 +62,7 @@ module.exports = {
 
     delete: (req, res) => {
         User.findByIdAndDelete(req.params.id)
-            .then((result) => {
+            .then(() => {
                 res.json({
                     msg: "User deleted!",
                 });
