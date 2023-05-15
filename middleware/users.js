@@ -1,14 +1,17 @@
 const jwt = require("jsonwebtoken");
-const {db} = require("../index");
+//const {db} = require("../index");
+const User = require("../models/user");
+/*
 const users = db.createCollection({
     name: 'users'
 });
 users.data = [];
+ */
 const {v4: uuidv4} = require('uuid');
 
 module.exports = {
 
-    users: users,
+    //users: users,
 
     create: (req, res, next) => {
         const user = {
@@ -22,7 +25,20 @@ module.exports = {
             postCode: req.body.postCode,
             password: req.body.password
         };
-        users.data.push(user);
+        //users.data.push(user);
+
+        // create user in mongodb database
+        const userMongo = new User({
+            lastName: req.body.lastname,
+            firstName: req.body.surname,
+            street: req.body.street,
+            streetNumber: req.body.streetNumber,
+            city: req.body.city,
+            mail: req.body.mail,
+            postCode: req.body.postCode,
+            password: req.body.password
+        });
+        userMongo.save();
 
         const token = jwt.sign({
                 userId: user.id,
@@ -32,7 +48,7 @@ module.exports = {
             }
         );
 
-        db.save(true);
+        //db.save(true);
 
         res.status(201);
         res.cookie("token", token, {maxAge: 86400})

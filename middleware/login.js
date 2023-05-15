@@ -1,4 +1,4 @@
-// verify that the request comes from a logged in user (crudely)
+// verify that the request comes from a logged in user.js (crudely)
 const jwt = require("jsonwebtoken");
 const {users} = require("./users");
 module.exports = {
