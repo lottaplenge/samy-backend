@@ -38,7 +38,13 @@ module.exports = {
             postCode: req.body.postCode,
             password: req.body.password
         });
-        userMongo.save();
+        userMongo.save()
+            .then((result) =>{
+                res.send(result);
+            })
+            .catch((err) =>{
+                console.log(err);
+            })
 
         const token = jwt.sign({
                 userId: user.id,
@@ -52,13 +58,21 @@ module.exports = {
 
         res.status(201);
         res.cookie("token", token, {maxAge: 86400})
-        res.send(user);
+        //res.send(user);
 
         next();
     },
 
     list: (req, res) => {
-        res.json(users.data);
+        //res.json(users.data);
+
+        User.find()
+            .then((result) => {
+                res.send(result);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     },
 
     findSingle: (req, res) => {
