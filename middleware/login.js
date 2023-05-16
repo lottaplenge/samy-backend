@@ -10,7 +10,7 @@ module.exports = {
                 const payload = jwt.verify(token, 'mysupersecretbackendtoken');
                 User.findById(payload.userId)
                     .then(() => {
-                        console.log("User verified!");
+                        console.log("User ", payload.userId, " verified!");
                         next();
                     })
             } catch (err) {
