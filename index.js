@@ -37,24 +37,4 @@ app.listen(port, function (err) {
     if (err) console.log(err);
     console.log("Server listening on PORT", port);
 });
-/*
-app.post('/', (req, res) => {
-    const userMongo = new User({
-        lastName: req.body.lastname,
-        firstName: req.body.surname,
-        street: req.body.street,
-        streetNumber: req.body.streetNumber,
-        city: req.body.city,
-        email: req.body.email,
-        postCode: req.body.postCode,
-        password: req.body.password
-    });
-    userMongo.save()
-        .then((result) => {
-            res.send(result);
-        })
-        .catch((err) => {
-            console.log(err)
-        })
-})
-*/
+
