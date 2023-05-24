@@ -2,6 +2,8 @@ const {Ice} = require('ice-db');
 const db = new Ice();
 db.setStorage(process.cwd())
 
+require('dotenv').config()
+
 const dbRoutes = require('./routes/dbRoutes');
 
 
@@ -13,7 +15,9 @@ module.exports = {
 const mongoose = require('mongoose');
 
 // access to mongodb
-const dbURI = "mongodb+srv://testuser:test1234@samydb.ascchv5.mongodb.net/samydb?retryWrites=true&w=majority";
+const mongoUser = process.env.MONGO_USER;
+const mongoTest = process.env.MONGO_PASSWORD;
+const dbURI = "mongodb+srv://" + mongoUser + ":" + mongoTest + "@samydb.ascchv5.mongodb.net/samydb?retryWrites=true&w=majority";
 mongoose.connect(dbURI, {useNewUrlParser: true})
     .then(() => {
         console.log('db connected');
@@ -25,6 +29,7 @@ mongoose.connect(dbURI, {useNewUrlParser: true})
 const express = require('express');
 const {router} = require('./routes/router.js');
 const cors = require('cors');
+
 const app = express();
 
 app.use(cors());
