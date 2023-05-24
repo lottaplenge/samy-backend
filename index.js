@@ -13,7 +13,7 @@ module.exports = {
 const mongoose = require('mongoose');
 
 // access to mongodb
-const dbURI = "mongodb+srv://testuser:asdf@samydb.ascchv5.mongodb.net/samydb?retryWrites=true&w=majority";
+const dbURI = "mongodb+srv://testuser:test1234@samydb.ascchv5.mongodb.net/samydb?retryWrites=true&w=majority";
 mongoose.connect(dbURI, {useNewUrlParser: true})
     .then(() => {
         console.log('db connected');
@@ -24,9 +24,10 @@ mongoose.connect(dbURI, {useNewUrlParser: true})
 
 const express = require('express');
 const {router} = require('./routes/router.js');
-const User = require("./models/user");
+const cors = require('cors');
 const app = express();
 
+app.use(cors());
 app.use(express.json())
 
 app.use('./routes/router', router);

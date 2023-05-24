@@ -6,8 +6,8 @@ module.exports = {
     create: (req, res, next) => {
         // create user in mongodb database
         const userMongo = new User({
-            lastName: req.body.lastname,
-            firstName: req.body.surname,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
             street: req.body.street,
             streetNumber: req.body.streetNumber,
             city: req.body.city,
@@ -76,8 +76,8 @@ module.exports = {
     update: (req, res, next) => {
         User.findByIdAndUpdate(req.params.id, {
             $set: {
-                lastName: req.body.lastname,
-                firstName: req.body.surname,
+                firstName: req.body.firstName,
+                lastName: req.body.lastName,
                 street: req.body.street,
                 streetNumber: req.body.streetNumber,
                 city: req.body.city,

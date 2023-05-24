@@ -1,7 +1,7 @@
 module.exports = {
     validate: (req, res, next) => {
         // username min length 3
-        if (!req.body.surname || req.body.surname.length < 3) {
+        if (!req.body.firstName || req.body.firstName.length < 3) {
             return res.status(400).send({
                 msg: 'Please enter a surname with min. 3 chars'
             });
