@@ -4,9 +4,9 @@ const users = require('../middleware/users.js');
 const offers = require('../middleware/offers.js');
 const login = require('../middleware/login.js');
 const hasId = require('../middleware/hasId.js');
-const {Router} = require("express");
+const express = require("express");
 
-const router = Router();
+const router = express.Router();
 router.post('/sign-up', signUp.validate, users.create);
 router.get('/users/:id', login.verify, hasId.verify, users.findSingle);
 router.delete('/users/:id', login.verify, hasId.verify, users.delete);

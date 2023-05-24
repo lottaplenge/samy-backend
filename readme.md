@@ -5,8 +5,8 @@ Sign up
 curl -i -X POST https://samy-backend-ybaxbalfwa-ey.a.run.app/api/sign-up
 -H "Content-Type: application/json"
 -H "token: token123"
--d '{"surname": "Jon",
-"lastname": "Doe", 
+-d '{"firstName": "Jon",
+"lastName": "Doe", 
 "street": "Teststraße 1",
 "city": "Entenhausen",
 "mail": "jondoetheplayer@yahoo.com",

@@ -1,79 +1,100 @@
-const {db} = require("../index");
-const offers = db.createCollection({
-    name: 'offers'
-});
-offers.data = [];
-const {v4: uuidv4} = require('uuid');
+const Offer = require('../models/offer');
 
 module.exports = {
     create: (req, res, next) => {
-        const offer = {
-            id: uuidv4(),
-            offeror : req.body.offeror,
-            school : req.body.school,
-            schoolClass : req.body.schoolClass,
-            firstSchoolDay : req.body.firstSchoolDay,
-            creationTime : req.body.creationTime
-        };
-        offers.data.push(offer);
 
-        db.save(true);
+        const offerMongo = new Offer({
+            offeror: req.body.offeror,
+            school: req.body.school,
+            schoolClass: req.body.schoolClass,
+            firstSchoolDay: req.body.firstSchoolDay,
+        });
 
-        res.status(201);
-        res.send(offer);
-
-        next();
+        offerMongo.save()
+            .then((result) => {
+                if(!result || result.length === 0){
+                    res.status(422).send("Unable to process!");
+                }else{
+                    res.send(result);
+                    next();
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+                res.status(500).send(err);
+            });
     },
 
     list: (req, res) => {
-        res.json(offers.data);
+        Offer.find()
+            .then((result) => {
+                if(!result || result.length === 0){
+                    res.send([]);
+                }else{
+                    res.send(result);
+                }
+            })
+            .catch((err) => {
+                res.status(500).send(err);
+                console.log(err);
+            })
     },
 
     findSingle: (req, res) => {
-        let findOne = offers.data.filter(offer => offer.id === req.params.id);
-        if (!findOne || findOne.length === 0) {
-            res.status(404).send("Not Found");
-        } else {
-            res.json(findOne);
-        }
+        Offer.findById(req.params.id)
+            .then((result) => {
+                if(!result || result.length === 0){
+                    res.status(404).send("Not Found");
+                }else{
+                    res.send(result);
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+                res.status(500).send(err);
+            })
+
     },
 
     delete: (req, res) => {
-        let findOne = offers.data.filter(offer => offer.id === req.params.id);
-        if (!findOne || findOne.length === 0) {
-            res.status(404).send("Not Found");
-        } else {
-            offers.data.delete(findOne);
-            db.save(true);
-            res.status(204).send();
-        }
+
+        Offer.findByIdAndDelete(req.params.id)
+            .then((result) => {
+                if(!result || result.length === 0){
+                    res.status(404).send("Not Found");
+                }else{
+                    res.status(200).json({
+                        msg: "Offer deleted!",
+                    });
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+                res.status(500).send(err);
+            })
     },
 
     update: (req, res, next) => {
-        let findOne = offers.data.filter(offer => offer.id === req.params.id);
 
-        if (!findOne || findOne.length === 0) {
-            res.status(404).send("Not Found");
-        }
-
-        const offer = {
-            id: req.params.id,
-            offeror : req.body.offeror,
-            school : req.body.school,
-            schoolClass : req.body.schoolClass,
-            firstSchoolDay : req.body.firstSchoolDay,
-            creationTime : req.body.creationTime
-        };
-        offers.data.delete(findOne);
-        offers.data.push(offer);
-
-        db.save(true);
-
-        res.status(204);
-        res.cookie("token", token, {maxAge: 86400})
-        res.send();
-
-        next();
+        Offer.findByIdAndUpdate(req.params.id, {
+            $set: {
+                offeror : req.body.offeror,
+                school : req.body.school,
+                schoolClass : req.body.schoolClass,
+                firstSchoolDay : req.body.firstSchoolDay,
+            }
+        }, {new: true})
+            .then((result) => {
+                if(!result || result.length === 0){
+                    res.status(404).send("Not Found");
+                }else{
+                    res.status(200).send(result);
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+                res.status(500).send(err);
+            })
     },
 }
 
