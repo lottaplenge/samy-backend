@@ -23,17 +23,8 @@ module.exports = {
 
                 return userMongo.save()
                     .then((result) =>{
-                        /*const token = jwt.sign({
-                                userId: result._id,
-                            },
-                            'mysupersecretbackendtoken', {
-                                expiresIn: '1d'
-                            }
-                        );*/
                         res.status(201);
-                        //res.cookie("token", token, {maxAge: 86400})
                         res.send(result);
-
 
                         next();
                     })

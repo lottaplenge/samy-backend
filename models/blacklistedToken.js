@@ -9,7 +9,6 @@ const blacklistedTokenSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now,
-        expires: '1h', // Set an expiration time for the token (e.g., 1 hour)
     },
 });
 
