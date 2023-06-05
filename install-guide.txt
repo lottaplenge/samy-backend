@@ -1,0 +1,83 @@
+### Guide for installing node.js and running the backend locally ###
+
+1. Install Node.js and npm
+    Windows:
+    1.1 Download the Node.js installer for Windows and install Node.js
+        - Go to https://nodejs.org/en/download and download the LTS Windows Installer.
+        - Run the installer and go with the default settings in the installation dialog
+    1.2 Verify that the installation process is completed correctly
+        - Open the console and run
+            Node --version
+          This should give you the current version of Node installed on your computer
+
+          Also run
+            npm --version
+          to ensure that npm is installed correctly on your computer.
+
+    Mac:
+        1.1 Download the Node.js installer for Mac and Install Node.js
+            - Go to https://nodejs.org/en/download and download the LTS Mac Installer.
+            - Run the installer and go with the default settings in the installation dialog
+        1.2 Verify that the installation process is completed correctly
+            - Open the terminal and run
+                Node --version
+              This should give you the current version of Node installed on your Mac
+
+              Also run
+                npm --version
+              to ensure that npm is installed correctly on your Mac.
+
+2. Download the samy-backend code repository
+    Go to https://github.com/lottaplenge/samy-backend, download the repository as a ZIP file and unpack it in your
+    desired location on your computer
+
+    OR
+
+    In your IDE (IntelliJ IDEA in this example)
+        - Go to File > New > Project from Version Control
+        - Select Repository URL on the left
+        - Select Git in the dropdown
+        - Paste the link to the backend repository in the URL field and specify your desired location on your computer
+        - Click "Clone"
+
+3. Install project dependencies
+   - Open a Console/Terminal and navigate into the samy-backend folder
+   OR
+   - When you have the project open in IntelliJ IDEA you can open the terminal at the bottom and you should already be
+     in the samy-backend folder
+   - Run
+        npm install
+     to install the project dependencies
+
+4. Create run configuration
+   - In IntelliJ IDEA go Run(on the top) > Edit configurations
+   - Click on the (+) Icon
+   - Select npm
+   - Fill the fields like follows
+        Name:           start
+        package.json:   select the path to where the package.json lies (usually you don't need to touch this)
+        Command:        run
+        Scripts:        start
+   - Click Apply
+
+5. Create .env File
+   - In IntelliJ IDEA create a new file in the top level (samy-backend) directory
+   - Name it ".env"
+   - Write:
+
+        MONGO_USER="_____"
+        MONGO_PASSWORD="_____"
+
+     and fill the blanks (_) with the username and password you received
+
+6. Run
+   - Click on the little Run (>) button in the top right toolbar
+   OR
+   - Run
+        npm start
+     in the terminal
+
+   If everything works correctly the run console should be displaying
+        Server Listening on Port 3000
+        db connected
+

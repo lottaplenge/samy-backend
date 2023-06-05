@@ -1,4 +1,4 @@
-// verify that the request comes from a logged in user.js (crudely)
+// verify that the request comes from a logged-in user.js (crudely)
 const jwt = require("jsonwebtoken");
 const User = require('../models/user')
 const BlacklistedToken = require('../models/blacklistedToken');
@@ -23,6 +23,7 @@ module.exports = {
                 });
             })
             .catch(err => {
+                console.error(err);
                 res.status(500).json({ error: 'Internal server error' });
             });
     },
@@ -40,7 +41,6 @@ module.exports = {
                         const payload = jwt.verify(token, 'mysupersecretbackendtoken');
                         User.findById(payload.userId)
                             .then(() => {
-                                console.log("User ", payload.userId, " verified!");
                                 next();
                             })
                     } catch (err) {
@@ -68,7 +68,8 @@ module.exports = {
                 res.json({ message: 'Logout successful' });
             })
             .catch(err => {
-                res.status(500).json({ err: 'Internal server error' });
+                console.error(err);
+                res.status(500).json({ error: 'Internal server error' });
             });
     }
 };

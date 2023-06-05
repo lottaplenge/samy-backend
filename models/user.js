@@ -41,12 +41,11 @@ const userSchema = new Schema({
 userSchema.pre('save', async function (next) {
     try {
         if (this.isModified('password')) {
-            const hashedPassword = await argon2.hash(this.password);
-            this.password = hashedPassword;
+            this.password = await argon2.hash(this.password);
         }
         next();
-    } catch (error) {
-        next(error);
+    } catch (err) {
+        next(err);
     }
 });
 

@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const jwt = require("jsonwebtoken");
 
 module.exports = {
 
@@ -23,13 +24,19 @@ module.exports = {
 
                 return userMongo.save()
                     .then((result) =>{
-                        res.status(201);
-                        res.send(result);
+                        const token = jwt.sign({ userId: result._id }, 'mysupersecretbackendtoken');
+                        User.findById(result._id).select('_id firstName lastName street streetNumber city mail postcode createdAt updatedAt')
+                            .then((user) => {
+                                res.cookie("token", token, {maxAge: 86400});
+                                res.status(201);
+                                res.send(user);
+                                next();
+                        });
 
-                        next();
                     })
                     .catch((err) =>{
                         console.log(err);
+                        res.status(500).json({error: err});
                     })
             });
 
@@ -38,7 +45,7 @@ module.exports = {
 
     list: (req, res) => {
 
-        User.find()
+        User.find().select('_id firstName lastName street streetNumber city mail postcode createdAt updatedAt')
             .then((result) => {
                 res.send(result);
             })
@@ -48,12 +55,13 @@ module.exports = {
     },
 
     findSingle: (req, res) => {
-        User.findById(req.params.id)
+        User.findById(req.params.id).select('_id firstName lastName street streetNumber city mail postcode createdAt updatedAt')
             .then((result) => {
                 res.send(result);
             })
             .catch((err) => {
                 console.log(err);
+                res.status(404).json({error: "User not found"})
             })
 
     },
@@ -81,12 +89,14 @@ module.exports = {
                 city: req.body.city,
                 mail: req.body.mail,
                 postCode: req.body.postCode,
-                //password: req.body.password
             },
         },{new:true})
             .then((result) => {
-                res.send(result);
-                next();
+                User.findById(result._id).select('_id firstName lastName street streetNumber city mail postcode createdAt updatedAt')
+                    .then((user) => {
+                        res.send(user);
+                        next();
+                    });
             })
             .catch((err) => {
                 console.log(err);
@@ -98,11 +108,8 @@ module.exports = {
         const currentPassword = req.body.currentPassword;
         const newPassword = req.body.newPassword;
 
-        console.log(currentPassword, newPassword, userId);
-
         User.findById(userId)
             .then(user => {
-                console.log(user);
                 if (!user) {
                     return res.status(404).json({ error: 'User not found' });
                 }
@@ -111,7 +118,6 @@ module.exports = {
                     if (!isPasswordValid) {
                         return res.status(401).json({ error: 'Invalid current password' });
                     }
-                    console.log("password Valid: ", isPasswordValid);
 
                     user.password = newPassword;
                     return user.save();
@@ -120,7 +126,8 @@ module.exports = {
             .then(() => {
                 res.json({ message: 'Password updated successfully' });
             })
-            .catch(error => {
+            .catch(err => {
+                console.error(err)
                 res.status(500).json({ error: 'Internal server error' });
             });
     }

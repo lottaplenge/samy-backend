@@ -4,7 +4,7 @@ db.setStorage(process.cwd())
 
 require('dotenv').config()
 
-const dbRoutes = require('./routes/dbRoutes');
+const router = require('./routes/router');
 
 
 module.exports = {
@@ -27,7 +27,6 @@ mongoose.connect(dbURI, {useNewUrlParser: true})
     });
 
 const express = require('express');
-const {router} = require('./routes/router.js');
 const cors = require('cors');
 
 const app = express();
@@ -35,8 +34,7 @@ const app = express();
 app.use(cors());
 app.use(express.json())
 
-app.use('./routes/router', router);
-app.use(dbRoutes);
+app.use(router);
 
 const port = parseInt(process.env.PORT) || 3000;
 app.listen(port, function (err) {

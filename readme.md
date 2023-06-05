@@ -15,3 +15,4 @@ curl -i -X POST https://samy-backend-ybaxbalfwa-ey.a.run.app/api/sign-up
 
 View single user
 curl -i https://samy-backend-ybaxbalfwa-ey.a.run.app/api/users/ea9262b9-6883-402c-8cdb-3b5a11b4f353 -H "token: token123"
+
