@@ -1,6 +1,8 @@
 const {Ice} = require('ice-db');
 const db = new Ice();
 db.setStorage(process.cwd())
+const logging = require('./utils/logging');
+const logError = logging.logError
 
 require('dotenv').config()
 
@@ -23,7 +25,7 @@ mongoose.connect(dbURI, {useNewUrlParser: true})
         console.log('db connected');
     })
     .catch((err) => {
-        console.log(err);
+        logError(err);
     });
 
 const express = require('express');
@@ -38,7 +40,7 @@ app.use(router);
 
 const port = parseInt(process.env.PORT) || 3000;
 app.listen(port, function (err) {
-    if (err) console.log(err);
+    if (err) logError(err);
     console.log("Server listening on PORT", port);
 });
 

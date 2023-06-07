@@ -1,5 +1,7 @@
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
+const logging = require('../utils/logging');
+const logError = logging.logError;
 
 module.exports = {
 
@@ -35,7 +37,7 @@ module.exports = {
 
                     })
                     .catch((err) =>{
-                        console.log(err);
+                        logError(err);
                         res.status(500).json({error: err});
                     })
             });
@@ -50,7 +52,7 @@ module.exports = {
                 res.send(result);
             })
             .catch((err) => {
-                console.log(err);
+                logError(err);
             });
     },
 
@@ -60,7 +62,7 @@ module.exports = {
                 res.send(result);
             })
             .catch((err) => {
-                console.log(err);
+                logError(err);
                 res.status(404).json({error: "User not found"})
             })
 
@@ -74,7 +76,7 @@ module.exports = {
                 });
             })
             .catch((err) => {
-                console.log(err);
+                logError(err);
             })
 
     },
@@ -99,7 +101,8 @@ module.exports = {
                     });
             })
             .catch((err) => {
-                console.log(err);
+                res.status(400).json({error: err});
+                logError(err);
             })
 
     },
@@ -127,7 +130,7 @@ module.exports = {
                 res.json({ message: 'Password updated successfully' });
             })
             .catch(err => {
-                console.error(err)
+                logError(err)
                 res.status(500).json({ error: 'Internal server error' });
             });
     }
