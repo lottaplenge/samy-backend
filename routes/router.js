@@ -1,9 +1,9 @@
 const express = require('express');
 const signUp = require('../middleware/sign-up.js');
 const users = require('../middleware/users.js');
-const login = require("../middleware/login");
-const hasId = require("../middleware/hasId");
-const offers = require("../middleware/offers");
+const login = require('../middleware/login');
+const hasId = require('../middleware/hasId');
+const offers = require('../middleware/offers');
 
 
 const router = express.Router();

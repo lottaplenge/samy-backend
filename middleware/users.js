@@ -1,6 +1,8 @@
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 
+const selection = '_id firstName lastName street streetNumber city mail postcode createdAt updatedAt';
+
 module.exports = {
 
     create: (req, res, next) => {
@@ -25,7 +27,7 @@ module.exports = {
                 return userMongo.save()
                     .then((result) =>{
                         const token = jwt.sign({ userId: result._id }, 'mysupersecretbackendtoken');
-                        User.findById(result._id).select('_id firstName lastName street streetNumber city mail postcode createdAt updatedAt')
+                        User.findById(result._id).select(selection)
                             .then((user) => {
                                 res.cookie("token", token, {maxAge: 86400});
                                 res.status(201);
@@ -45,7 +47,7 @@ module.exports = {
 
     list: (req, res) => {
 
-        User.find().select('_id firstName lastName street streetNumber city mail postcode createdAt updatedAt')
+        User.find().select(selection)
             .then((result) => {
                 res.send(result);
             })
@@ -55,13 +57,13 @@ module.exports = {
     },
 
     findSingle: (req, res) => {
-        User.findById(req.params.id).select('_id firstName lastName street streetNumber city mail postcode createdAt updatedAt')
+        User.findById(req.params.id).select(selection)
             .then((result) => {
                 res.send(result);
             })
             .catch((err) => {
                 console.log(err);
-                res.status(404).json({error: "User not found"})
+                res.json({});
             })
 
     },
@@ -92,7 +94,7 @@ module.exports = {
             },
         },{new:true})
             .then((result) => {
-                User.findById(result._id).select('_id firstName lastName street streetNumber city mail postcode createdAt updatedAt')
+                User.findById(result._id).select(selection)
                     .then((user) => {
                         res.send(user);
                         next();
