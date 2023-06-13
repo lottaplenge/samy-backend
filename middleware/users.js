@@ -63,7 +63,7 @@ module.exports = {
             })
             .catch((err) => {
                 console.log(err);
-                res.json({});
+                res.status(400).json({error: "Wrong ID format"});
             })
 
     },
