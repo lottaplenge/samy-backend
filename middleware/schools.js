@@ -39,8 +39,8 @@ module.exports = {
                 res.status(201).send(result);
             })
             .catch(err => {
-
-                console.error(err);
+                console.log(err);
+                res.status(500).json({error: err});
             })
     }
 }
