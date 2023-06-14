@@ -20,7 +20,7 @@ const schoolSchema = new Schema({
     },
     postCode: {
         type: String,
-        required: true,
+        required: false,
     },
     city: {
         type: String,
@@ -28,7 +28,7 @@ const schoolSchema = new Schema({
     },
     website: {
         type: String,
-        required: true,
+        required: false,
     },
     phone: {
         type: String,
