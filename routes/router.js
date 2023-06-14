@@ -23,6 +23,8 @@ router.get('/offers/', login.verify, offers.list);
 
 router.get('/schools', login.verify, schools.list);
 router.get('/schools/:id', login.verify, schools.findOne);
+router.post('/schools', login.verify, schools.addOne);
+router.post('/schools/many', login.verify, schools.addMany);
 
 
 

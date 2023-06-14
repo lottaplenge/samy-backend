@@ -42,5 +42,35 @@ module.exports = {
                 console.log(err);
                 res.status(500).json({error: err});
             })
+    },
+
+    addMany: (req, res) => {
+        const schools = req.body;
+        let addCount = 0;
+        for(let i = 0; i < schools.length; i++){
+            const school = new School({
+                schoolType: schools[i].schoolType,
+                privateSchool: schools[i].privateSchool,
+                schoolName: schools[i].schoolName,
+                street: schools[i].address['street'],
+                postCode: schools[i].address['postCode'],
+                city: schools[i].address['city'],
+                website: schools[i].website,
+                phone : schools[i].phone,
+                languages: schools[i].languages,
+            });
+
+            school.save()
+                .then(result => {
+                    addCount++;
+                    console.log("success");
+                    console.log(result);
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+        }
+        const message = `${addCount} schools added`;
+        res.status(201).json({message: message});
     }
 }
