@@ -44,8 +44,9 @@ app.listen(port, function (err) {
 
 const School = require('./models/school');
 const fs = require('fs');
+/*
 
-/*fs.readFile('./assets/schools_leipzig.json', 'utf-8', (err, data) => {
+fs.readFile('./assets/schools_leipzig_v02.json', 'utf-8', (err, data) => {
     if (err) {
         console.error('Error reading JSON file:', err);
         return;
@@ -53,16 +54,13 @@ const fs = require('fs');
 
     const schoolData = JSON.parse(data);
     for(let i = 0; i < schoolData.length; i++){
-        let privateSchool = "";
-        if(schoolData[i].hasOwnProperty('privateschool')) privateSchool = schoolData[i].privateschool;
-        else if(schoolData[i].hasOwnProperty('Schule in freier Trägerschaft')) privateSchool = schoolData[i]['Schule in freier Trägerschaft'];
         const school = new School({
-            schoolType: schoolData[i].schooltype,
-            privateSchool: privateSchool,
-            schoolName: schoolData[i].schoolname,
-            street: schoolData[i].address['street'],
-            postCode: schoolData[i].address['postal code'],
-            city: schoolData[i].address['city'],
+            schoolType: schoolData[i].schoolType,
+            privateSchool: schoolData[i].privateSchool,
+            schoolName: schoolData[i].schoolName,
+            street: schoolData[i].address.street,
+            postCode: schoolData[i].address.postCode,
+            city: schoolData[i].address.city,
             website: schoolData[i].website,
             phone : schoolData[i].phone,
             languages: schoolData[i].languages,
@@ -76,6 +74,7 @@ const fs = require('fs');
                 console.error(err, school);
             });
     }
-});*/
+});
+*/
 
 
