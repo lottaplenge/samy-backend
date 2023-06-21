@@ -2,8 +2,7 @@
 const jwt = require("jsonwebtoken");
 const User = require('../models/user')
 const BlacklistedToken = require('../models/blacklistedToken');
-const logging = require('../utils/logging');
-const logError = logging.logError;
+const {logError, logWarning, logInfo} = require('../utils/logging');
 
 module.exports = {
     login: (req, res, next) => {

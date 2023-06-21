@@ -1,6 +1,22 @@
+require('dotenv').config()
+
+const logLevel = process.env.LOG_LEVEL;
 function logError(error){
     console.error(`[ERROR] ${format(error)}`);
 }
+
+function logWarning(message){
+    if(logLevel === "debug"){
+        console.log(`[WARN] ${format(message)}`)
+    }
+}
+
+function logInfo(message){
+    if(logLevel === "info"){
+        console.log(`[INFO] ${format(message)}`)
+    }
+}
+
 
 function format(data){
     const now = new Date();
@@ -8,5 +24,7 @@ function format(data){
 }
 
 module.exports = {
-    logError
+    logError,
+    logWarning,
+    logInfo
 }

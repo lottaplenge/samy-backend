@@ -1,7 +1,8 @@
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
-const logging = require('../utils/logging');
-const logError = logging.logError;
+//const logging = require('../utils/logging');
+//const logError = logging.logError;
+const {logError, logWarning, logInfo} = require('../utils/logging');
 
 module.exports = {
 
@@ -29,6 +30,7 @@ module.exports = {
                         const token = jwt.sign({ userId: result._id }, 'mysupersecretbackendtoken');
                         User.findById(result._id).select('_id firstName lastName street streetNumber city mail postcode createdAt updatedAt')
                             .then((user) => {
+                                logInfo("User saved to DB");
                                 res.cookie("token", token, {maxAge: 86400});
                                 res.status(201);
                                 res.send(user);

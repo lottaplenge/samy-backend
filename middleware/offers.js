@@ -1,6 +1,5 @@
 const Offer = require('../models/offer');
-const logging = require('../utils/logging');
-const logError = logging.logError;
+const {logError, logWarning, logInfo} = require('../utils/logging');
 
 
 module.exports = {
