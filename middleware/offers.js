@@ -4,8 +4,8 @@ module.exports = {
     create: (req, res, next) => {
 
         const offerMongo = new Offer({
-            offeror: req.body.offeror,
-            school: req.body.school,
+            offerorId: req.body.offerorId,
+            schoolId: req.body.schoolId,
             schoolClass: req.body.schoolClass,
             firstSchoolDay: req.body.firstSchoolDay,
         });
@@ -78,8 +78,8 @@ module.exports = {
 
         Offer.findByIdAndUpdate(req.params.id, {
             $set: {
-                offeror : req.body.offeror,
-                school : req.body.school,
+                offerorId : req.body.offerorId,
+                schoolId : req.body.schoolId,
                 schoolClass : req.body.schoolClass,
                 firstSchoolDay : req.body.firstSchoolDay,
             }

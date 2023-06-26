@@ -5,6 +5,7 @@ const login = require('../middleware/login');
 const hasId = require('../middleware/hasId');
 const offers = require('../middleware/offers');
 const schools = require('../middleware/schools');
+const offerMatching = require('../middleware/offerMatching');
 
 
 const router = express.Router();
@@ -25,6 +26,8 @@ router.get('/schools', login.verify, schools.list);
 router.get('/schools/:id', login.verify, schools.findOne);
 router.post('/schools', login.verify, schools.addOne);
 router.post('/schools/many', login.verify, schools.addMany);
+
+router.get('/matchOffers/:UserId', login.verify, offerMatching.getAllMatches)
 
 
 

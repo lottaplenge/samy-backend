@@ -2,17 +2,9 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const offerSchema = new Schema({
-    offeror: {
-        type: String,
-        required: true,
-    },
     offerorId:{
         type: String,
         required: false,
-    },
-    school: {
-        type: String,
-        required: true,
     },
     schoolId:{
         type: String,
