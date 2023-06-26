@@ -1,6 +1,7 @@
 const School = require('../models/school');
 const Offer = require('../models/offer');
 const User = require('../models/user');
+const axios = require('axios');
 
 module.exports = {
     getUserOffers: (req, res, next) => {
@@ -16,8 +17,6 @@ module.exports = {
                 }
                 School.find({'_id': { $in: schoolIds}})
                     .then(result => {
-                        let schoolTypes = [];
-                        let privateSchoolValues = [];
                         for(let i = 0; i < result.length; i++){
                             offerParams[i] = {
                                 schoolId: schoolIds[i],
@@ -76,6 +75,8 @@ async function getMatchingOffers(req, res, next) {
                 && schoolInfo[obj.schoolId].privateSchool === userOffers[key].privateSchool
         })
     }
+
+    // enrich matched offers with information about school
     let detailedMatchingOffers = {};
     for(let key in matchingOffers){
         let detailedMatchingOffer = {}
@@ -96,9 +97,83 @@ async function getMatchingOffers(req, res, next) {
        }
        detailedMatchingOffers[key] = detailedMatchingOffer;
     }
+    req.matchedOffers = detailedMatchingOffers;
     next();
 }
 
-async function calculateSchoolDistance(res, req, next){
+// function uses mapbox api to calculate the car driving distance between the user and the school in offer
+async function calculateSchoolDistance(req, res, next){
+    let matchedOffers = req.matchedOffers;
 
+    const user = await User.findById(req.params.userId)
+        .then(result => {
+            return result;
+        })
+
+    // get User address and address coordinates
+    const userAddress = `${user.street} ${user.streetNumber}, ${user.city}, Germany`;
+    const userCoordinates = await getAddressCoordinates(userAddress);
+
+    // start variable for mapbox api
+    const start = `${userCoordinates.lng},${userCoordinates.lat}`;
+
+    // mapbox routing api url and api key
+    const apiUrl = 'https://api.openrouteservice.org/v2/directions/driving-car';
+    const apiKey = '5b3ce3597851110001cf6248b000473fa0b34a81bdcdb7e1b204b397';
+
+    // iterate through matched offers to calculate distance btw school and user
+    for(let userOfferKey in matchedOffers){
+        for(let matchedOfferKey in matchedOffers[userOfferKey]){
+            const schoolAddress = `${matchedOffers[userOfferKey][matchedOfferKey].address.street}, ${matchedOffers[userOfferKey][matchedOfferKey].address.city}, Germany`;
+
+            // calculate school coordinates
+            const schoolCoordinates = await getAddressCoordinates(schoolAddress);
+
+            // end variable for mapbox api
+            const end = `${schoolCoordinates.lng},${schoolCoordinates.lat}`;
+
+            // call to mapbox api and get car driving distance and duration in "distance" object
+            const distance = await axios.get(apiUrl, {
+                params: {
+                    api_key: apiKey,
+                    start: start,
+                    end: end
+                }
+            })
+                .then(response =>{
+                    return {
+                        distance: response.data.features[0].properties.segments[0].distance,
+                        duration: response.data.features[0].properties.segments[0].duration
+                    }
+                })
+                .catch(err =>{
+                    console.log(err);
+                })
+
+            // add distance to respective matched offer
+            matchedOffers[userOfferKey][matchedOfferKey]['distance'] = distance;
+        }
+    }
+    res.send(matchedOffers);
+}
+
+// helper function to calculate the coordinates of an address
+async function getAddressCoordinates(address){
+    const apiUrl = 'https://api.openrouteservice.org/geocode/search';
+    const apiKey = '5b3ce3597851110001cf6248b000473fa0b34a81bdcdb7e1b204b397';
+
+    const latLng = await axios.get(apiUrl, {
+        params: {
+            api_key: apiKey,
+            text: address,
+        }
+    })
+        .then(response =>{
+            return {lat: response.data.bbox[1], lng: response.data.bbox[0]}
+
+        })
+        .catch(err =>{
+            console.log(err);
+        })
+    return latLng;
 }
