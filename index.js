@@ -4,7 +4,7 @@ db.setStorage(process.cwd())
 
 require('dotenv').config()
 
-const dbRoutes = require('./routes/dbRoutes');
+const router = require('./routes/router');
 
 
 module.exports = {
@@ -27,7 +27,6 @@ mongoose.connect(dbURI, {useNewUrlParser: true})
     });
 
 const express = require('express');
-const {router} = require('./routes/router.js');
 const cors = require('cors');
 
 const app = express();
@@ -35,12 +34,47 @@ const app = express();
 app.use(cors());
 app.use(express.json())
 
-app.use('./routes/router', router);
-app.use(dbRoutes);
+app.use(router);
 
 const port = parseInt(process.env.PORT) || 3000;
 app.listen(port, function (err) {
     if (err) console.log(err);
     console.log("Server listening on PORT", port);
 });
+
+const School = require('./models/school');
+const fs = require('fs');
+/*
+
+fs.readFile('./assets/schools_leipzig_v02.json', 'utf-8', (err, data) => {
+    if (err) {
+        console.error('Error reading JSON file:', err);
+        return;
+    }
+
+    const schoolData = JSON.parse(data);
+    for(let i = 0; i < schoolData.length; i++){
+        const school = new School({
+            schoolType: schoolData[i].schoolType,
+            privateSchool: schoolData[i].privateSchool,
+            schoolName: schoolData[i].schoolName,
+            street: schoolData[i].address.street,
+            postCode: schoolData[i].address.postCode,
+            city: schoolData[i].address.city,
+            website: schoolData[i].website,
+            phone : schoolData[i].phone,
+            languages: schoolData[i].languages,
+        });
+
+        school.save()
+            .then(result => {
+                console.log("success");
+            })
+            .catch(err =>{
+                console.error(err, school);
+            });
+    }
+});
+*/
+
 
