@@ -27,7 +27,7 @@ router.get('/schools/:id', login.verify, schools.findOne);
 router.post('/schools', login.verify, schools.addOne);
 router.post('/schools/many', login.verify, schools.addMany);
 
-router.get('/matchOffers/:UserId', login.verify, offerMatching.getAllMatches)
+router.get('/matchOffers/:userId', login.verify, offerMatching.getUserOffers, offerMatching.getMatchingOffers)
 
 
 
