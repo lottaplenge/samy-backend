@@ -5,7 +5,6 @@ const User = require('../models/user');
 module.exports = {
     getUserOffers: (req, res, next) => {
         const offerorId = req.params.userId;
-        console.log(offerorId)
         Offer.find({offerorId})
             .then(result => {
                 let schoolIds = [];
