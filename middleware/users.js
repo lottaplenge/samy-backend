@@ -1,5 +1,6 @@
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
+const {logError, logInfo} = require('../utils/logging');
 
 const selection = '_id firstName lastName street streetNumber city mail postcode createdAt updatedAt';
 
@@ -29,6 +30,7 @@ module.exports = {
                         const token = jwt.sign({ userId: result._id }, 'mysupersecretbackendtoken');
                         User.findById(result._id).select(selection)
                             .then((user) => {
+                                logInfo("User saved to DB");
                                 res.cookie("token", token, {maxAge: 86400});
                                 res.status(201);
                                 res.send(user);
@@ -37,7 +39,7 @@ module.exports = {
 
                     })
                     .catch((err) =>{
-                        console.log(err);
+                        logError(err);
                         res.status(500).json({error: err});
                     })
             });
@@ -52,7 +54,7 @@ module.exports = {
                 res.send(result);
             })
             .catch((err) => {
-                console.log(err);
+                logError(err);
             });
     },
 
@@ -62,7 +64,7 @@ module.exports = {
                 res.send(result);
             })
             .catch((err) => {
-                console.log(err);
+                logError(err);     
                 res.status(400).json({error: "Wrong ID format"});
             })
 
@@ -76,7 +78,7 @@ module.exports = {
                 });
             })
             .catch((err) => {
-                console.log(err);
+                logError(err);
             })
 
     },
@@ -101,7 +103,8 @@ module.exports = {
                     });
             })
             .catch((err) => {
-                console.log(err);
+                res.status(400).json({error: err});
+                logError(err);
             })
 
     },
@@ -129,7 +132,7 @@ module.exports = {
                 res.json({ message: 'Password updated successfully' });
             })
             .catch(err => {
-                console.error(err)
+                logError(err)
                 res.status(500).json({ error: 'Internal server error' });
             });
     }

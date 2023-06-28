@@ -2,6 +2,7 @@
 const jwt = require("jsonwebtoken");
 const User = require('../models/user')
 const BlacklistedToken = require('../models/blacklistedToken');
+const {logError, logWarning, logInfo} = require('../utils/logging');
 
 module.exports = {
     login: (req, res, next) => {
@@ -23,7 +24,7 @@ module.exports = {
                 });
             })
             .catch(err => {
-                console.error(err);
+                logError(err);
                 res.status(500).json({ error: 'Internal server error' });
             });
     },
@@ -44,7 +45,7 @@ module.exports = {
                                 next();
                             })
                     } catch (err) {
-                        console.error(err);
+                        logError(err);
                         res.status(400).send("Invalid token");
                     }
                 })
@@ -68,7 +69,7 @@ module.exports = {
                 res.json({ message: 'Logout successful' });
             })
             .catch(err => {
-                console.error(err);
+                logError(err);
                 res.status(500).json({ error: 'Internal server error' });
             });
     }

@@ -1,4 +1,6 @@
 const Offer = require('../models/offer');
+const {logError} = require('../utils/logging');
+
 
 module.exports = {
     create: (req, res, next) => {
@@ -20,7 +22,7 @@ module.exports = {
                 }
             })
             .catch((err) => {
-                console.log(err);
+                logError(err);
                 res.status(500).send(err);
             });
     },
@@ -36,7 +38,7 @@ module.exports = {
             })
             .catch((err) => {
                 res.status(500).send(err);
-                console.log(err);
+                logError(err);
             })
     },
 
@@ -50,7 +52,7 @@ module.exports = {
                 }
             })
             .catch((err) => {
-                console.log(err);
+                logError(err);
                 res.status(500).send(err);
             })
 
@@ -69,7 +71,7 @@ module.exports = {
                 }
             })
             .catch((err) => {
-                console.log(err);
+                logError(err);
                 res.status(500).send(err);
             })
     },
@@ -92,7 +94,7 @@ module.exports = {
                 }
             })
             .catch((err) => {
-                console.log(err);
+                logError(err);
                 res.status(500).send(err);
             })
     },
