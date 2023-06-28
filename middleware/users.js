@@ -1,8 +1,6 @@
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
-//const logging = require('../utils/logging');
-//const logError = logging.logError;
-const {logError, logWarning, logInfo} = require('../utils/logging');
+const {logError, logInfo} = require('../utils/logging');
 
 const selection = '_id firstName lastName street streetNumber city mail postcode createdAt updatedAt';
 
