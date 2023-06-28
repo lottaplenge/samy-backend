@@ -6,13 +6,13 @@ function logError(error){
 }
 
 function logWarning(message){
-    if(logLevel === "debug"){
+    if(logLevel === "debug" || logLevel === "info" || logLevel === "warn"){
         console.log(`[WARN] ${format(message)}`)
     }
 }
 
 function logInfo(message){
-    if(logLevel === "info"){
+    if(logLevel === "debug" || logLevel === "info"){
         console.log(`[INFO] ${format(message)}`)
     }
 }
