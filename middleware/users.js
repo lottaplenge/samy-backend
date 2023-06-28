@@ -4,6 +4,8 @@ const jwt = require("jsonwebtoken");
 //const logError = logging.logError;
 const {logError, logWarning, logInfo} = require('../utils/logging');
 
+const selection = '_id firstName lastName street streetNumber city mail postcode createdAt updatedAt';
+
 module.exports = {
 
     create: (req, res, next) => {
@@ -28,7 +30,7 @@ module.exports = {
                 return userMongo.save()
                     .then((result) =>{
                         const token = jwt.sign({ userId: result._id }, 'mysupersecretbackendtoken');
-                        User.findById(result._id).select('_id firstName lastName street streetNumber city mail postcode createdAt updatedAt')
+                        User.findById(result._id).select(selection)
                             .then((user) => {
                                 logInfo("User saved to DB");
                                 res.cookie("token", token, {maxAge: 86400});
@@ -49,7 +51,7 @@ module.exports = {
 
     list: (req, res) => {
 
-        User.find().select('_id firstName lastName street streetNumber city mail postcode createdAt updatedAt')
+        User.find().select(selection)
             .then((result) => {
                 res.send(result);
             })
@@ -59,13 +61,13 @@ module.exports = {
     },
 
     findSingle: (req, res) => {
-        User.findById(req.params.id).select('_id firstName lastName street streetNumber city mail postcode createdAt updatedAt')
+        User.findById(req.params.id).select(selection)
             .then((result) => {
                 res.send(result);
             })
             .catch((err) => {
-                logError(err);
-                res.status(404).json({error: "User not found"})
+                logError(err);     
+                res.status(400).json({error: "Wrong ID format"});
             })
 
     },
@@ -96,7 +98,7 @@ module.exports = {
             },
         },{new:true})
             .then((result) => {
-                User.findById(result._id).select('_id firstName lastName street streetNumber city mail postcode createdAt updatedAt')
+                User.findById(result._id).select(selection)
                     .then((user) => {
                         res.send(user);
                         next();
