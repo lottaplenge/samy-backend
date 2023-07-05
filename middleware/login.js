@@ -2,10 +2,10 @@
 const jwt = require("jsonwebtoken");
 const User = require('../models/user')
 const BlacklistedToken = require('../models/blacklistedToken');
-const {logError, logWarning, logInfo} = require('../utils/logging');
+const {logError} = require('../utils/logging');
 
 module.exports = {
-    login: (req, res, next) => {
+    login: (req, res) => {
         const mail = req.body.mail;
         const password = req.body.password;
         User.findOne({mail})
@@ -57,7 +57,7 @@ module.exports = {
 
 
     },
-    logout: (req, res, next) => {
+    logout: (req, res) => {
         const token = req.headers.token;
         // Create a blacklisted token
         const blacklistedToken = new BlacklistedToken({ token });

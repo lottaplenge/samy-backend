@@ -108,7 +108,7 @@ module.exports = {
             })
 
     },
-    updatePassword(req, res, next){
+    updatePassword(req, res){
         const userId = req.params.id;
         const currentPassword = req.body.currentPassword;
         const newPassword = req.body.newPassword;

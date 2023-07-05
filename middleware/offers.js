@@ -76,7 +76,7 @@ module.exports = {
             })
     },
 
-    update: (req, res, next) => {
+    update: (req, res) => {
 
         Offer.findByIdAndUpdate(req.params.id, {
             $set: {

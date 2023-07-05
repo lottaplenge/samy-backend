@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const argon2 = require('argon2');
 const Schema = mongoose.Schema;
+const {logError} = require('../utils/logging');
 
 const userSchema = new Schema({
     firstName: {
@@ -45,7 +46,7 @@ userSchema.pre('save', async function (next) {
         }
         next();
     } catch (err) {
-        next(err);
+        logError(err);
     }
 });
 

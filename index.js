@@ -1,6 +1,3 @@
-const {Ice} = require('ice-db');
-const db = new Ice();
-db.setStorage(process.cwd())
 const logging = require('./utils/logging');
 const logError = logging.logError
 
